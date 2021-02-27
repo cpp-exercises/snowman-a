@@ -1,15 +1,9 @@
 #!/bin/bash
 
-if [ -d "solution" ]
-then
-    cp * solution/
-    cd solution
-    ./grade
-    cd ..
-    exit 0
-fi
-
 source grade_utils
+run_in_folder_if_exists "solution"
+
+
 printf "\n\n### Cleaning old files ###\n"
 make -f Makefile clean
 

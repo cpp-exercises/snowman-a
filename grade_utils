@@ -5,6 +5,21 @@ set -o pipefail   # see https://unix.stackexchange.com/a/267031/16569
 exec 2>&1         # redirect stderr to stdout: https://unix.stackexchange.com/q/505581/16569
 
 
+run_in_folder_if_exists() {
+	if [ -d "$1" ]
+	then
+		GRADEFILES=`ls -p | grep -v /`
+		cp $GRADEFILES $1/
+		call cd $1
+		$0
+		rm $GRADEFILES
+		cd ..
+		exit 0
+	fi
+}
+
+
+
 # from here: https://stackoverflow.com/a/1115909/827927
 swap() {
     local TMPFILE=tmp.$$
