@@ -1,8 +1,8 @@
 /**
- * Demo program for phonetic search.
+ * Demo program for snowman exercise.
  * 
  * Author: Erel Segal-Halevi
- * Since : 2020-03
+ * Since : 2021-02
  */
 
 #include "snowman.hpp"
