@@ -1,0 +1,44 @@
+#!/bin/bash
+
+if [ -d "solution" ]
+then
+    cp * solution/
+    cd solution
+    ./grade
+    cd ..
+    exit 0
+fi
+
+source grade_utils
+printf "\n\n### Cleaning old files ###\n"
+make -f Makefile clean
+
+i=0
+printf "\n\n### Check $i: our demo program should compile with your class\n"
+grade_command make -f Makefile demo
+grades[$i]=$grade
+printf "### Score $i: ${grades[$i]}\n"
+
+let "i=i+1"
+printf "\n\n### Check $i: our demo program should run without errors\n"
+grade_command ./demo
+grades[$i]=$grade
+printf "### Score $i: ${grades[$i]}\n"
+
+let "i=i+1"
+printf "\n\n### Check $i: your test should compile \n"
+grade_command make -f Makefile test
+grades[$i]=$grade
+printf "### Score $i: ${grades[$i]}\n"
+
+let "i=i+1"
+printf "\n\n### Check $i: you should write some new tests\n"
+grade_program ./test
+grades[$i]=$grade
+printf "### Score $i: ${grades[$i]}\n"
+
+# from https://stackoverflow.com/a/31653407/827927
+IFS='+' average_grade=$(echo "scale=1;(${grades[*]})/${#grades[@]}"|bc)
+printf "\n\nGrade: $average_grade\n\n"
+
+make -f Makefile --silent clean

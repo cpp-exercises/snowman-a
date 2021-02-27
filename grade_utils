@@ -1,0 +1,59 @@
+#!/bin/bash
+# Utilities for making grade-scripts shorter
+
+set -o pipefail   # see https://unix.stackexchange.com/a/267031/16569
+exec 2>&1         # redirect stderr to stdout: https://unix.stackexchange.com/q/505581/16569
+
+
+# from here: https://stackoverflow.com/a/1115909/827927
+swap() {
+    local TMPFILE=tmp.$$
+	if [ -f $1 ] && [ -f $2 ]
+	then
+    	mv $1 $TMPFILE && mv $2 $1 && mv $TMPFILE $2
+	elif [ -f $1 ]
+	then
+    	mv $1 $2
+	elif [ -f $2 ]
+	then
+    	mv $2 $1
+	fi
+}
+
+# A function that echoes and executes a command.
+call() { 
+	echo "! ${@/eval/}" 
+	$@
+}
+
+# A function that echoes and executes a command.
+# If it fails, it sets grade=0.
+# If it succeeds, it sets grade=100.
+grade_command() { 
+	grade=100
+	call $@
+	exitcode=$?
+	if [ $exitcode -ne 0 ]
+	then 
+		printf "*** Command failed. Exit code: $exitcode ***\n"
+		grade=0
+	fi
+}
+
+# A function that echoes and executes a command.
+# If it fails, it sets grade=0.
+# If it succeeds, it sets grade=[last line of output]
+grade_program() { 
+	program=$1
+	TIMEOUT=1
+	echo "! timeout $TIMEOUT ./$program" 
+	timeout $TIMEOUT ./$program
+	exitcode=$?
+	if [ $exitcode -ne 0 ]
+	then 
+		printf "*** Command failed. Exit code: $exitcode ***\n"
+		grade=0
+	else
+		grade=$( { timeout $TIMEOUT ./$program || echo 0; } | tail -n1 )
+	fi
+}
