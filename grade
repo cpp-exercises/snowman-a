@@ -27,7 +27,7 @@ total=$((total + grade))
 
 let "i=i+1"
 printf "\n\n### Check $i: you should write some new tests\n"
-grade_program ./test
+grade_program test
 printf "### Score $i: $grade\n"
 total=$((total + grade))
 
