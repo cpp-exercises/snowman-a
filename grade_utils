@@ -11,7 +11,7 @@ run_in_folder_if_exists() {
 		GRADEFILES=`ls -p | grep -v /`
 		cp $GRADEFILES $1/
 		call cd $1
-		$0
+		source $0
 		rm $GRADEFILES
 		cd ..
 		exit 0
