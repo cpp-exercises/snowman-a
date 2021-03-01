@@ -34,4 +34,6 @@ total=$((total + grade))
 total=$((total / 4))
 printf "\n\nGrade: $total\n\n"
 
+grade_command make -f Makefile tidy
+
 make -f Makefile --silent clean
