@@ -28,6 +28,6 @@ _===_
 	try {
 		cout << ariel::snowman(5) << endl;   // Exception - not a valid code
 	} catch (exception& ex) {
-	 	cout << "   caught exception: " << ex.what() << endl;  // should print "Did not find the word 'happ' in the text"
+	 	cout << "   caught exception: " << ex.what() << endl;  // should print "Invalid code '5'"
 	}
 }
