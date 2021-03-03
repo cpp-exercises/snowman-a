@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source grade_utils
+TIMEOUT=3
 run_in_folder_if_exists "solution"
 
 printf "\n\n### Cleaning old files ###\n"
