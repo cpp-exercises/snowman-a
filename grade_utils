@@ -6,6 +6,10 @@ exec 2>&1         # redirect stderr to stdout: https://unix.stackexchange.com/q/
 
 TIMEOUT=1  # 1 second - default timeout
 
+typeset -F SECONDS
+SECONDS=0
+echo "[$SECONDS seconds]"
+
 run_in_folder_if_exists() {
 	if [ -d "$1" ]
 	then
@@ -54,6 +58,7 @@ grade_command() {
 		printf "*** Command failed. Exit code: $exitcode ***\n"
 		grade=0
 	fi
+	echo "--- $SECONDS seconds"
 }
 
 # A function that echoes and executes a command.
@@ -71,4 +76,5 @@ grade_program() {
 	else
 		grade=$( { timeout $TIMEOUT ./$program || echo 0; } | tail -n1 )
 	fi
+	echo "--- $SECONDS seconds"
 }
