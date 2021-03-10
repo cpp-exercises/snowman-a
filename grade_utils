@@ -4,7 +4,7 @@
 set -o pipefail   # see https://unix.stackexchange.com/a/267031/16569
 exec 2>&1         # redirect stderr to stdout: https://unix.stackexchange.com/q/505581/16569
 
-TIMEOUT=1  # 1 second - default timeout
+TIMEOUT=10  # 10 seconds - default timeout
 
 typeset -F SECONDS
 SECONDS=0
@@ -23,22 +23,6 @@ run_in_folder_if_exists() {
 	fi
 }
 
-
-
-# from here: https://stackoverflow.com/a/1115909/827927
-swap() {
-    local TMPFILE=tmp.$$
-	if [ -f $1 ] && [ -f $2 ]
-	then
-    	mv $1 $TMPFILE && mv $2 $1 && mv $TMPFILE $2
-	elif [ -f $1 ]
-	then
-    	mv $1 $2
-	elif [ -f $2 ]
-	then
-    	mv $2 $1
-	fi
-}
 
 # A function that echoes and executes a command.
 call() { 
@@ -77,4 +61,21 @@ grade_program() {
 		grade=$( { timeout $TIMEOUT ./$program || echo 0; } | tail -n1 )
 	fi
 	echo "--- $SECONDS seconds"
+}
+
+
+
+# from here: https://stackoverflow.com/a/1115909/827927
+swap() {
+    local TMPFILE=tmp.$$
+	if [ -f $1 ] && [ -f $2 ]
+	then
+    	mv $1 $TMPFILE && mv $2 $1 && mv $TMPFILE $2
+	elif [ -f $1 ]
+	then
+    	mv $1 $2
+	elif [ -f $2 ]
+	then
+    	mv $2 $1
+	fi
 }
